@@ -32,9 +32,9 @@ public class ManipuladorArquivoTXT {
         return produtos;
     }
 
-    public static void salvarArquivoVendas (Comanda comanda) {
-        File arquivoVendas = new File("src/ArquivosTXT/vendas.txt");
+    public static void salvarArquivoVendas(Comanda comanda) {
 
+        File arquivoVendas = new File("src/ArquivosTXT/vendas.txt");
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(arquivoVendas, true))) {
             writer.write(comanda.toString());
             writer.newLine();
@@ -43,5 +43,31 @@ public class ManipuladorArquivoTXT {
         }
     }
 
+
+    public static int obterProximoCodigoVenda() {
+        int proximoCodigo = 1;
+        try {
+            File arquivoVendas = new File("src/ArquivosTXT/vendas.txt");
+            if (arquivoVendas.exists() && arquivoVendas.length() > 0) {
+                Scanner scanner = new Scanner(arquivoVendas);
+                while (scanner.hasNextLine()) {
+                    String linha = scanner.nextLine();
+                    String[] partes = linha.split("\\|");
+                    if (partes.length >= 1) {
+                        try {
+                            int codigoVenda = Integer.parseInt(partes[0].trim());
+                            proximoCodigo = codigoVenda + 1;
+                        } catch (NumberFormatException e) {
+                            System.out.println("Erro ao converter o código de venda do arquivo vendas.txt");
+                        }
+                    }
+                }
+                scanner.close();
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Arquivo vendas.txt não encontrado.");
+        }
+        return proximoCodigo;
+    }
 
 }

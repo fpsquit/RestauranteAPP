@@ -11,7 +11,7 @@ public class ControladorRestaurante {
 
     public void iniciarComanda(String nomeCliente) {
         comandaAtual = new Comanda(nomeCliente);
-        System.out.println("Comanda Iniciada do " + comandaAtual.getNomeCliente());
+        System.out.println("Comanda Iniciada de " + comandaAtual.getNomeCliente());
     }
 
     public void exibirProdutosDisponiveis() {
@@ -58,11 +58,12 @@ public class ControladorRestaurante {
     }
 
     public void finalizarComanda() {
-        if (comandaAtual != null) {
+        if (!comandaAtual.getItens().isEmpty()) {
+            exibirComandaAtual();
             ManipuladorArquivoTXT.salvarArquivoVendas (comandaAtual);
-            System.out.println("Comanda finalizada e salva no arquivo vendas.txt.");
+            System.out.println("Comanda de "+ comandaAtual.getNomeCliente() + " finalizada e salva com sucesso.");
         } else {
-            System.out.println("Nenhuma comanda em andamento.");
+            System.out.println("Comanda Cancelada nenhum Produto adicionado.");
         }
     }
 
